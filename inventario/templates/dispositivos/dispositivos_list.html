@@ -1,0 +1,292 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+  <head>
+    <meta charset="utf-8">
+    <title>Lista de dispositivos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.3/css/select.dataTables.min.css">
+
+<!-- modal
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">-->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+  <style>
+      .highlight{
+          color: lightgreen;
+          background: black;
+      }
+
+      td.details-control {
+          background: url('imgs/details_open.png') no-repeat center center;
+          cursor: pointer;
+      }
+
+      tr.shown td.details-control{
+          background: url('imgs/details_close.png') no-repeat center center;
+      }
+
+  </style>
+
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="col-md-12">
+        <h1>Datatable dispositivos</h1>
+
+          <div class="well">
+             <!-- <div class="text-center">
+                  <a class="toggle-vis btn btn-sm btn-info" data-column="0">Dispositivo</a>
+                  <a class="toggle-vis btn btn-sm btn-info" data-column="1">Marca</a>
+                  <a class="toggle-vis btn btn-sm btn-info" data-column="3">Modelo</a>
+                  <a class="toggle-vis btn btn-sm btn-info" data-column="4">Número de serie</a>
+                  <a class="toggle-vis btn btn-sm btn-info" data-column="4">Fecha instalación</a>
+                  <a class="toggle-vis btn btn-sm btn-info" data-column="4">Usuario</a>
+              </div>-->
+              <table class="table" id="dispositivos-table">
+                  <thead>
+                  <tr>
+                      <th>Dispositivo</th>
+                      <th>Marca</th>
+                      <th>Modelo</th>
+                      <th>Número de serie</th>
+                      <th>Fecha instalación</th>
+                      <th>Usuario</th>
+                      <th>Acciones</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                  <tfoot>
+                     <tr>
+                         <th>Dispositivo</th>
+                         <th>Marca</th>
+                         <th>Modelo</th>
+                         <th>S/N</th>
+                         <th>Fecha instalación</th>
+                         <th>Usuario</th>
+                         <th></th>
+                    </tr>
+                  </tfoot>
+              </table>
+
+
+          </div>
+
+
+
+
+<!--        <div class="well">
+            <table class="table" id="users-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+            </table>
+
+
+        </div>
+
+
+          <div class="well">
+              <table class="table" id="products-table">
+                  <thead>
+                  <tr>
+                      <th>Id</th>
+                      <th>Nombre</th>
+                      <th>Precio</th>
+                  </tr>
+                  </thead>
+                  <tfoot>
+                  <tr>
+                      <th colspan="3" style="text-align:right">Total:</th>
+                  </tr>
+                  </tfoot>
+              </table>
+
+
+          </div>
+
+
+          <div class="well">
+              <table class="table" id="companies-table">
+                  <thead>
+                  <tr>
+                      <th></th>
+                      <th>Id</th>
+                      <th>Nombre</th>
+                      <th>Inicio</th>
+                  </tr>
+                  </thead>
+                </table>
+          </div>
+-->
+
+
+      </div>
+    </div>
+
+
+
+
+<!--  MODAL -->
+<div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Esto es un modal</h4>
+      </div>
+      <div class="modal-body">
+        Texto del modal
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+  </div>
+</div>
+
+
+
+  
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+   <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+    <script src="//cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.flash.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src=" //cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
+    <script src=" //cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
+
+    <script src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>
+
+    <script>
+        jQuery(document).ready(function($){
+
+          $.extend(true, $.fn.dataTable.defaults, {
+              info: true,
+              paging: true,
+              ordering: true,
+              searching: true,
+              language: {
+                  url:"//cdn.datatables.net/plug-ins/1.10.16/i18n/Galician.json"
+              },
+              lengthMenu: [
+                  [10, 20, 50, 100, 500, -1],[10, 20, 50, 100, 500, 'Todos']
+              ],
+              dom: "Bfrtip",
+              buttons: [
+                  'copy', 'csv', 'excel', 'pdf', 'print'
+              ],
+              //,
+              //    'selected',
+              //    'selectedSingle',
+              //    'selectAll',
+              //    'selectNone',
+              //    'selectRows',
+              //    'selectColumns',
+              //    'selectCells'
+
+              select: true
+          });
+
+
+          var dispositivostable = $("#dispositivos-table").DataTable({
+              stateSave: true,
+              scrollY: "30vh",
+              paging: true,
+              columns:[
+                  {name: "dispositivo", data:"dispositivo"},
+                  {name: "marca", data:"marca"},
+                  {name: "modelo", data:"modelo"},
+                  {name: "num_serie", data:"num_serie"},
+                  {name: "fecha_instalacion", data:"fecha_instalacion"},
+                  {name: "nombre_id", data:"nombre_id"},
+                  {defaultContent: "<button type='button' class='editar btn btn-primary' data-toggle='modal' data-target='#miModal'><i class='fa fa-pencil-square-o'></i></button>"},
+                  
+              ],
+              columnDefs: [
+                  {targets: 0},
+                  {targets: 1},
+                  {targets: 2},
+                  {targets: 3},
+                  {targets: 4},
+                  {targets: 5},
+                  
+              ],
+              ajax: {
+                  url: '/dispositivos/rellena',
+                  dataSrc: ''
+              }
+          //obtener_data_editar("#dispositivos-table tbody","#dispositivos-table");    
+          });
+          
+
+          $('#dispositivos-table tbody').on( 'click', "button.editar", function () {
+             var data = dispositivostable.row($(this).parents("tr") ).data();
+             console.log(data);
+          } );
+
+
+
+      //    $('#dispositivos-table').on( 'click', 'tbody tr', function () {
+      //      dispositivostable.row( this ).edit( {
+      //        buttons: [
+      //      { label: 'Cancel', fn: function () { this.close(); } },
+      //      'Edit'
+      //      ]
+      //      } );
+      //    } );
+
+
+
+
+
+
+          //$('#miModal').on('shown.bs.modal', function () {
+            //$('#myInput').trigger('focus')
+
+
+        //    $(tbody).on("click", "button.editar", function(){
+        //          var data = table.row($(this).parents("tr") ).data();
+        //          console.log(data);
+        //        });
+
+
+          //});
+
+          //var obtener_data_editar = function(tbody, table){
+          //  $(tbody).on("click", "button.editar", function(){
+          //        var data = table.row($(this).parents("tr") ).data();
+          //        console.log(data);
+          //      });
+          //      } 
+          //$("#dispositivos-table tfoot th").each(function(){
+          //    var title = $(this).text();
+          //    $(this).html('<input type="text" placeholder="Buscar por ' + title + '" />');
+          //});
+
+
+
+// texto en default content:    <button type='button' class='editar btn btn-primary'><i class='fa fa-pencil-square-o'></i></button> <button type='button' class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar' ><i class='fa fa-trash-o'></i></button>
+        });
+
+  </script>
+
+  {% endblock %}
